@@ -1,0 +1,89 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>明日教育课程管理系统-管理界面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            font-size: 14px;
+        }
+
+        img {
+            width: 320px;
+            height: 180px;
+        }
+    </style>
+</head>
+<body>
+<h1 style="color: red;font-size: 50px;text-align: center">明日教育课程管理系统</h1>
+
+<p style="text-align: center;color: blue">
+    Java架构师高端课程，让你面试拿高薪无压力不再做java小白
+    明日教育-用心教育做良心课程
+</p>
+
+<table border="0" cellspacing="1" bgcolor="#990033" width="100%" align="center">
+    <tr bgcolor="#ffffff" align="center">
+        <td>编号</td>
+        <td>名称</td>
+        <td>价格</td>
+        <td>描述</td>
+        <td>优惠价</td>
+        <td>封面</td>
+        <td>课程状态</td>
+        <td>操作</td>
+    </tr>
+
+    <tr th:each="product:${productList}" bgcolor="#ffffff" align="center">
+        <td th:text="${product.PId}"></td>
+        <td th:text="${product.PName}"></td>
+        <td th:text="${product.PPrice}"></td>
+        <td th:text="${product.PDes}"></td>
+        <td th:text="${product.PDiscountPrice}"></td>
+        <td>
+            <img th:src="${product.getPImage()}" alt="">
+        </td>
+
+        <td th:if="${product.PDeleted==0}">
+            <span>上架</span>
+        </td>
+
+        <td th:if="${product.PDeleted==1}">
+            <span>下架</span>
+        </td>
+
+        <td>
+<!--            a的href的话就要写一个控制器里面的mapingurl方法，-->
+<!--            任何标签都要onclick的监听，这样就可以在前端完成了不需要很强的逻辑了-->
+<!--            这儿不拼接的话，就是字符串了，且内单外双的重要性，(引号)-->
+            <a href="#" id="closedBtn" th:onclick="'closedFunc('+${product.PId}+')'">下架</a>
+        </td>
+
+    </tr>
+
+</table>
+
+
+<script>
+    //alert(1)
+//功能函数，以后肯定要写的，要懂的
+    //(pid),pid一个代表的形参
+    //下架即逻辑删除，plus的区别其它的数据库框架的特性
+    function closedFunc(pid) {
+        if (confirm("您真的要下架该课程吗?")) {
+            //默认get请求
+            location.href = "/closedProductById?pid=" + pid;
+            //说明fuction返回时boolean?
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+
+
+</body>
+</html>
